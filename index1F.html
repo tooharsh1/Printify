@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Printify — Custom T-Shirt Printing</title>
+  <meta name="description" content="Printify: Premium custom t-shirt printing. Design, print, and submit your work with ease." />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    /* ===== CSS Variables ===== */
+    :root {
+      --bg: #ffffff;
+      --card: #ffffff;
+      --text: #1a1a1a;
+      --text-muted: #6b4c3a;
+      --accent: #ff6b35;
+      --accent-light: #f7931e;
+      --accent-pale: #ffc857;
+      --border: rgba(0, 0, 0, 0.08);
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+      --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.08);
+      --glass: blur(10px) saturate(120%);
+      --grad-accent-1: radial-gradient(1200px 600px at 10% -10%, rgba(255, 107, 53, 0.10), transparent 40%);
+      --grad-accent-2: radial-gradient(800px 500px at 90% 10%, rgba(247, 147, 30, 0.10), transparent 40%);
+      --grad-card: linear-gradient(180deg, rgba(255, 107, 53, 0.03), rgba(255, 107, 53, 0.01));
+    }
+
+    /* ===== Global Styles ===== */
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, system-ui, Segoe UI, Roboto, Arial, sans-serif;
+      line-height: 1.6;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    h1, h2, h3 {
+      margin: 0;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    h1 {
+      font-size: 46px;
+      line-height: 1.1;
+    }
+
+    h2 {
+      font-size: 28px;
+      line-height: 1.2;
+    }
+
+    h3 {
+      font-size: 18px;
+      line-height: 1.3;
+      margin: 8px 0;
+    }
+
+    p {
+      margin: 0;
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 34px;
+      }
+    }
+
+    /* ===== Background Gradients ===== */
+    .bg-wrap::before,
+    .bg-wrap::after {
+      content: "";
+      position: fixed;
+      inset: -20% -10% auto -10%;
+      height: 70vh;
+      z-index: -2;
+      pointer-events: none;
+    }
+
+    .bg-wrap::before {
+      background: var(--grad-accent-1);
+    }
+
+    .bg-wrap::after {
+      background: var(--grad-accent-2);
+    }
+
+    /* ===== Header & Navigation ===== */
+    header {
+      position: sticky;
+      top: 0;
+      backdrop-filter: var(--glass);
+      background: rgba(255, 255, 255, 0.95);
+      border-bottom: 1px solid var(--border);
+      z-index: 50;
+    }
+
+    .nav {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      font-size: 18px;
+      letter-spacing: 0.2px;
+    }
+
+    .logo {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: conic-gradient(from 180deg at 50% 50%, #ff6b35, #f7931e, #ffc857, #ff6b35);
+      box-shadow: 0 8px 20px rgba(255, 107, 53, 0.35), inset 0 0 20px rgba(255, 255, 255, 0.12);
+      flex-shrink: 0;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+    }
+
+    .nav-links a {
+      padding: 8px 10px;
+      border-radius: 8px;
+      color: var(--text-muted);
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+      background: rgba(0, 0, 0, 0.06);
+    }
+
+    /* ===== Buttons ===== */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 16px;
+      border-radius: 10px;
+      border: 0;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-light));
+      color: #ffffff;
+      box-shadow: 0 10px 24px rgba(255, 107, 53, 0.25);
+    }
+
+    .btn-primary:hover {
+      filter: brightness(1.05);
+      box-shadow: 0 12px 28px rgba(255, 107, 53, 0.3);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      border: 1px solid rgba(0, 0, 0, 0.14);
+      color: var(--text);
+    }
+
+    .btn-ghost:hover {
+      background: rgba(0, 0, 0, 0.04);
+      border-color: rgba(0, 0, 0, 0.2);
+    }
+
+    .cta {
+      background: linear-gradient(135deg, var(--accent), var(--accent-light));
+      color: #ffffff;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-weight: 700;
+      box-shadow: 0 10px 24px rgba(255, 107, 53, 0.25);
+      border: 0;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .cta:hover {
+      filter: brightness(1.05);
+    }
+
+    /* ===== Hero Section ===== */
+    .hero {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 60px 20px 40px;
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 40px;
+      align-items: center;
+    }
+
+    @media (max-width: 900px) {
+      .hero {
+        grid-template-columns: 1fr;
+        padding-top: 40px;
+      }
+    }
+
+    .hero h1 {
+      margin: 0 0 16px;
+      color: var(--text);
+    }
+
+    .hero .sub {
+      color: var(--text-muted);
+      max-width: 60ch;
+      font-size: 16px;
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .hero-art {
+      position: relative;
+      aspect-ratio: 1.1;
+      border-radius: 20px;
+      overflow: hidden;
+      background: var(--grad-card);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+
+    .hero-art .hero-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .hero-art .leaf {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(20px) saturate(140%);
+      opacity: 0.7;
+    }
+
+    .leaf.l1 {
+      width: 220px;
+      height: 220px;
+      left: -30px;
+      top: -30px;
+      background: rgba(255, 107, 53, 0.25);
+    }
+
+    .leaf.l2 {
+      width: 180px;
+      height: 180px;
+      right: -20px;
+      top: 10px;
+      background: rgba(247, 147, 30, 0.2);
+    }
+
+    .leaf.l3 {
+      width: 260px;
+      height: 260px;
+      left: 30%;
+      bottom: -60px;
+      background: rgba(255, 200, 87, 0.25);
+    }
+
+    /* ===== Feature Panel ===== */
+    .panel {
+      max-width: 1200px;
+      margin: 20px auto 0;
+      padding: 0 20px 60px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    @media (max-width: 900px) {
+      .panel {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 620px) {
+      .panel {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: var(--grad-card);
+      backdrop-filter: var(--glass);
+      box-shadow: var(--shadow-sm);
+      padding: 24px;
+      transition: all 0.3s ease;
+    }
+
+    .card:hover {
+      border-color: rgba(255, 107, 53, 0.2);
+      box-shadow: var(--shadow);
+    }
+
+    .kicker {
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 14px;
+      margin-bottom: 8px;
+      letter-spacing: 0.2px;
+      text-transform: uppercase;
+    }
+
+    .card .muted {
+      color: var(--text-muted);
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    /* ===== Product Grid ===== */
+    .grid {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px 20px 60px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    @media (max-width: 900px) {
+      .grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 620px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .product {
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      background: var(--card);
+      backdrop-filter: var(--glass);
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      transition: all 0.3s ease;
+    }
+
+    .product:hover {
+      border-color: rgba(255, 107, 53, 0.2);
+      box-shadow: var(--shadow);
+      transform: translateY(-4px);
+    }
+
+    .product img {
+      aspect-ratio: 16 / 10;
+      object-fit: cover;
+      width: 100%;
+    }
+
+    .product .content {
+      padding: 18px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .product-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    .pill {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(255, 107, 53, 0.1);
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 12px;
+      border: 1px solid rgba(255, 107, 53, 0.25);
+      white-space: nowrap;
+    }
+
+    .price {
+      font-weight: 800;
+      font-size: 16px;
+      color: var(--accent);
+    }
+
+    .product h3 {
+      margin: 8px 0 6px;
+      color: var(--text);
+    }
+
+    .product .muted {
+      color: var(--text-muted);
+      font-size: 14px;
+      line-height: 1.5;
+      flex: 1;
+    }
+
+    /* ===== Section ===== */
+    .section {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px 70px;
+    }
+
+    .section h2 {
+      margin: 0 0 12px;
+      color: var(--text);
+    }
+
+    .section > .muted {
+      color: var(--text-muted);
+      margin: 0 0 20px;
+      font-size: 15px;
+    }
+
+    /* ===== Submission Section ===== */
+    .submission {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 20px;
+    }
+
+    @media (max-width: 900px) {
+      .submission {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .box {
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      background: var(--grad-card);
+      backdrop-filter: var(--glass);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .box .kicker {
+      margin-bottom: 12px;
+    }
+
+    .links {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .links .btn {
+      padding: 10px 14px;
+      font-size: 13px;
+    }
+
+    /* ===== Footer ===== */
+    footer {
+      border-top: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(255, 107, 53, 0.06), rgba(255, 107, 53, 0.02));
+    }
+
+    .foot {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 28px 20px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .tiny {
+      font-size: 13px;
+      color: #a0826d;
+    }
+
+    /* ===== Utility Classes ===== */
+    .muted {
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-wrap"></div>
+
+  <header>
+    <nav class="nav">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <span>Printify</span>
+      </div>
+      <div class="nav-links">
+        <a href="#designs">Designs</a>
+        <a href="#why">Why Printify</a>
+        <a href="#submission">Submission</a>
+        <a class="cta" href="#designs">Start Printing</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div>
+        <h1>Custom t-shirts, printed to perfection</h1>
+        <p class="sub">Design your vision, bring it to life. Premium quality prints, fast turnaround, and affordable pricing. From personal projects to bulk orders—we've got you covered.</p>
+        <div class="hero-buttons">
+          <a class="btn btn-primary" href="#designs">Browse Designs</a>
+          <a class="btn btn-ghost" href="#why">Learn More</a>
+        </div>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <img class="hero-img" src="assets/Black-T-shirt.webp" alt="Custom t-shirt printing" />
+        <div class="leaf l1"></div>
+        <div class="leaf l2"></div>
+        <div class="leaf l3"></div>
+      </div>
+    </section>
+
+    <section class="panel" id="why">
+      <div class="card">
+        <div class="kicker">Premium Quality</div>
+        <div class="muted">High-resolution prints using advanced DTG and screen printing technology. Colors that pop and last.</div>
+      </div>
+      <div class="card">
+        <div class="kicker">Fast Turnaround</div>
+        <div class="muted">Get your custom tees in 3-5 business days. Rush orders available for urgent projects.</div>
+      </div>
+      <div class="card">
+        <div class="kicker">Affordable Pricing</div>
+        <div class="muted">Competitive rates for single prints or bulk orders. No hidden fees, transparent pricing always.</div>
+      </div>
+    </section>
+
+    <section class="grid" id="designs">
+      <article class="product">
+        <img src="assets/CLASSIC CREW NECK.jpg" alt="Classic Crew Neck with graphic print" />
+        <div class="content">
+          <div class="product-header">
+            <span class="pill">Classic</span>
+            <span class="price">₹299</span>
+          </div>
+          <h3>Classic Crew Neck</h3>
+          <p class="muted">Timeless style. 100% cotton comfort. Perfect for any design.</p>
+        </div>
+      </article>
+
+      <article class="product">
+        <img src="assets/V NECK.webp" alt="Premium V-Neck printed tee" />
+        <div class="content">
+          <div class="product-header">
+            <span class="pill">Premium</span>
+            <span class="price">₹399</span>
+          </div>
+          <h3>Premium V-Neck</h3>
+          <p class="muted">Elevated comfort. Soft fabric blend. Sophisticated look.</p>
+        </div>
+      </article>
+
+      <article class="product">
+        <img src="assets/crock.webp" alt="Oversized Fit streetwear print" />
+        <div class="content">
+          <div class="product-header">
+            <span class="pill">Trendy</span>
+            <span class="price">₹349</span>
+          </div>
+          <h3>Oversized Fit</h3>
+          <p class="muted">Modern silhouette. Relaxed fit. Street style ready.</p>
+        </div>
+      </article>
+    </section>
+ 
+    <section class="section" id="submission">
+      <h2>Submission</h2>
+      <p class="muted">CourseWork for the semester.</p>
+      <div class="submission">
+        <div class="box">
+          <div class="kicker">Google Drive Links</div>
+          <div class="links">
+            <a class="btn btn-primary" href="https://drive.google.com/drive/folders/1uP8feverNseyXKLOPrPdQZJKh1g2OE-q?usp=sharing" target="_blank" rel="noopener">Assignment</a>
+            <a class="btn btn-ghost" href="https://drive.google.com/drive/folders/1dCn3JoWvfgWW2Sq0bVci6yMnYFr-3-zA?usp=sharing" target="_blank" rel="noopener">Experiment</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="foot">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <span>Printify</span>
+      </div>
+      <div class="tiny">© <span id="year"></span> Printify. Design. Print. Inspire.</div>
+    </div>
+  </footer>
+
+  <script>
+    // Set current year in footer
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Smooth scroll for internal navigation
+    document.querySelectorAll('a[href^="#"]').forEach(link => {
+      link.addEventListener('click', (e) => {
+        const id = link.getAttribute('href').slice(1);
+        const element = document.getElementById(id);
+        if (element) {
+          e.preventDefault();
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
